@@ -71,7 +71,7 @@
 
   /* ================= 封面 ================= */
   .s1{position:relative;padding:0;display:block}
-  .s1 .art{position:absolute;left:0;right:0;top:0;bottom:42%;background:var(--paper);overflow:hidden}
+  .s1 .art{position:absolute;left:0;right:0;top:0;bottom:calc(42% - 4px);background:var(--paper);overflow:hidden}
   .s1 .art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
   .s1 .band{position:absolute;left:0;right:0;bottom:0;height:42%;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:calc(var(--u)*2.2) calc(var(--u)*6)}
   .s1 h1{font-size:calc(var(--u)*5.8);line-height:1.08;color:var(--paper)}
@@ -265,7 +265,7 @@
           <defs>
             <symbol id="p" viewBox="0 0 100 140">
               <circle cx="50" cy="30" r="21" fill="var(--body,#070707)"/>
-              <path d="M50 44c8 0 14 4 16 11l3 9c11 5 18 16 18 29v47H13V93c0-13 7-24 18-29l3-9c2-7 8-11 16-11z" fill="var(--body,#070707)"/>
+              <path d="M50 44c8 0 14 4 16 11l3 9c12 5 27 17 27 30v46H4V94c0-13 15-25 27-30l3-9c2-7 8-11 16-11z" fill="var(--body,#070707)"/>
             </symbol>
             <symbol id="pPhone" viewBox="0 0 100 160">
               <use href="#p" y="20" width="100" height="140"/>
@@ -277,6 +277,8 @@
               <path d="M22 106h276c7 0 12-5 12-12v-6c0-9-6-16-15-19l-40-10-24-20c-6-5-13-7-21-7H130c-8 0-16 3-21 9l-21 22-42 9c-10 2-16 10-16 19v3c0 6 4 12 10 12z" fill="var(--body,#F5F2EC)"/>
               <path d="M22 106h276c7 0 12-5 12-12v-6c0-9-6-16-15-19l-40-10-24-20c-6-5-13-7-21-7H130c-8 0-16 3-21 9l-21 22-42 9c-10 2-16 10-16 19v3c0 6 4 12 10 12z" fill="none" stroke="var(--line,none)" stroke-width="2" clip-path="url(#carTop)"/>
               <path d="M132 34h44l15 22h-74zM264 56h16l24 10h-48z" fill="var(--win,#070707)"/>
+              <circle cx="104" cy="108" r="26" fill="var(--line,none)"/>
+              <circle cx="258" cy="108" r="26" fill="var(--line,none)"/>
               <circle cx="104" cy="108" r="17" fill="var(--tyre,#070707)" stroke="var(--body,#F5F2EC)" stroke-width="4"/>
               <circle cx="258" cy="108" r="17" fill="var(--tyre,#070707)" stroke="var(--body,#F5F2EC)" stroke-width="4"/>
               <g fill="var(--drv,#070707)">
