@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>四小时，一辆车的两种版本</title>
+<style>
+  :root{
+    --ink:#0B0B0B;
+    --ink-2:#17171A;
+    --paper:#F5F2EC;
+    --red:#C8102E;
+    --grey:#8A8A8A;
+    --u:8px;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#050505;overflow:hidden}
+  body{
+    color:var(--paper);
+    font-family:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  #stage{position:fixed;inset:0;display:grid;place-items:center}
+  #deck{
+    position:relative;
+    width:min(100vw,177.78vh);
+    height:min(56.25vw,100vh);
+    display:flex;
+    transition:transform .8s var(--ease);
+    will-change:transform;
+  }
+  .slide{
+    flex:0 0 100%;
+    height:100%;
+    position:relative;
+    overflow:hidden;
+    padding:calc(var(--u)*7) calc(var(--u)*8);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .slide.dark{background:var(--ink);color:var(--paper)}
+  .slide.light{background:var(--paper);color:var(--ink)}
+  .slide.red{background:var(--red);color:var(--paper)}
+
+  .kicker{
+    font-family:Didot,"Bodoni MT","Times New Roman",Georgia,serif;
+    font-size:calc(var(--u)*1.35);
+    letter-spacing:.38em;
+    color:var(--red);
+    margin:0 0 calc(var(--u)*2);
+  }
+  .slide.red .kicker{color:var(--paper);opacity:.75}
+  h1{
+    font-size:calc(var(--u)*7.2);
+    line-height:1.16;
+    margin:0;
+    font-weight:600;
+    letter-spacing:.015em;
+  }
+  h2{
+    font-size:calc(var(--u)*4.6);
+    line-height:1.25;
+    margin:0 0 calc(var(--u)*3.4);
+    font-weight:600;
+  }
+  p{font-size:calc(var(--u)*2.05);line-height:1.95;margin:0}
+  .sub{font-size:calc(var(--u)*1.95);line-height:1.9;margin-top:calc(var(--u)*2.6);max-width:62%}
+  .foot{
+    position:absolute;
+    left:calc(var(--u)*8);
+    right:calc(var(--u)*8);
+    bottom:calc(var(--u)*3.4);
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:calc(var(--u)*1.02);
+    letter-spacing:.02em;
+    opacity:.5;
+  }
+  .num{
+    font-family:Didot,"Bodoni MT",Georgia,serif;
+    color:var(--red);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- 封面 ---------- */
+  .s1{padding:0;justify-content:flex-end}
+  .s1 .cover{position:absolute;inset:0}
+  .s1 .cover svg{width:100%;height:100%;display:block}
+  .s1 .cap{position:relative;padding:0 calc(var(--u)*8) calc(var(--u)*8)}
+  .s1 h1{font-size:calc(var(--u)*7.6)}
+
+  /* ---------- 目录 ---------- */
+  .toc{display:grid;gap:calc(var(--u)*2.4);margin-top:calc(var(--u)*1)}
+  .toc-row{display:flex;align-items:baseline;gap:calc(var(--u)*2.2)}
+  .toc-row .n{font-family:Didot,"Bodoni MT",Georgia,serif;font-size:calc(var(--u)*3.4);color:var(--red)}
+  .toc-row .t{font-size:calc(var(--u)*2.5)}
+  .toc-row .rule{flex:1;height:1px;background:currentColor;opacity:.22;transform:translateY(calc(var(--u)*-0.8))}
+
+  /* ---------- 信息墙 ---------- */
+  .wall{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center}
+  .ghost-car{position:absolute;right:0;bottom:calc(var(--u)*2);width:52%;opacity:.16}
+  .wall-item{
+    font-size:calc(var(--u)*3.1);
+    line-height:1.5;
+    margin:0 0 calc(var(--u)*2.2);
+    letter-spacing:.01em;
+  }
+  .wall-item.big{font-size:calc(var(--u)*4.6);margin-bottom:calc(var(--u)*3)}
+  .wall-item.red{color:var(--red)}
+  .wall .tag{
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:calc(var(--u)*1.1);
+    letter-spacing:.08em;
+    opacity:.55;
+    margin-top:calc(var(--u)*2);
+  }
+
+  /* ---------- 通报页 ---------- */
+  .bulletin{position:relative;z-index:2;max-width:66%}
+  .bulletin .row{display:flex;gap:calc(var(--u)*1.6);margin-bottom:calc(var(--u)*1.7);font-size:calc(var(--u)*1.95);line-height:1.75}
+  .bulletin .row .k{font-family:Didot,"Bodoni MT",Georgia,serif;color:var(--red);min-width:calc(var(--u)*9)}
+  .bulletin .hl{background:linear-gradient(transparent 62%, rgba(200,16,46,.18) 62%);font-weight:600}
+  .rule-red{position:absolute;left:calc(var(--u)*8);right:calc(var(--u)*8);top:calc(var(--u)*30);height:2px;background:var(--red);transform:scaleX(0);transform-origin:left}
+  .is-active .rule-red{animation:grow .9s var(--ease) .15s forwards}
+  @keyframes grow{to{transform:scaleX(1)}}
+  .s4 .car-wrap{position:absolute;right:calc(var(--u)*8);bottom:calc(var(--u)*8);width:34%;opacity:.9}
+
+  /* ---------- 对照 ---------- */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*5);position:relative;z-index:2}
+  .col h3{
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:calc(var(--u)*1.35);
+    letter-spacing:.22em;
+    font-weight:500;
+    opacity:.7;
+    margin:0 0 calc(var(--u)*2);
+  }
+  .col ul{list-style:none;margin:0;padding:0}
+  .col li{font-size:calc(var(--u)*2.05);line-height:1.6;padding:calc(var(--u)*1.1) 0;border-bottom:1px solid rgba(11,11,11,.14)}
+  .col li u{text-decoration:none;border-bottom:2px solid var(--red);padding-bottom:2px}
+  .mid-note{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    font-size:calc(var(--u)*1.5);
+    color:var(--red);
+    letter-spacing:.12em;
+    white-space:nowrap;
+    background:var(--paper);
+    padding:calc(var(--u)*.8) calc(var(--u)*1.6);
+  }
+  .halves{position:absolute;inset:calc(var(--u)*6);pointer-events:none;opacity:.1}
+  .halves svg{width:100%;height:100%}
+
+  /* ---------- 三条机制 ---------- */
+  .mech{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*4);margin-top:calc(var(--u)*3)}
+  .mech .node{position:relative;padding-top:calc(var(--u)*4)}
+  .mech .node::before{
+    content:"";position:absolute;left:0;top:0;width:calc(var(--u)*2.2);height:calc(var(--u)*.28);
+    background:var(--red);transform:scaleX(0);transform-origin:left;
+  }
+  .is-active .mech .node::before{animation:grow .7s var(--ease) forwards}
+  .is-active .mech .node:nth-child(2)::before{animation-delay:.25s}
+  .is-active .mech .node:nth-child(3)::before{animation-delay:.5s}
+  .mech .no{font-family:Didot,"Bodoni MT",Georgia,serif;color:var(--red);font-size:calc(var(--u)*1.5);letter-spacing:.1em}
+  .mech h4{font-size:calc(var(--u)*2.3);margin:calc(var(--u)*1.2) 0 calc(var(--u)*1);font-weight:600}
+  .mech p{font-size:calc(var(--u)*1.65);line-height:1.9;opacity:.78}
+  .mech-tail{margin-top:calc(var(--u)*4.5);font-size:calc(var(--u)*1.95);line-height:1.8;max-width:78%}
+  .mech-tail b{color:var(--red);font-weight:600}
+
+  /* ---------- 反转 ---------- */
+  .s7 .veil{position:absolute;inset:-20%;background:var(--red);clip-path:circle(0% at 50% 50%)}
+  .s7.is-active .veil{animation:wipe .9s var(--ease) forwards}
+  @keyframes wipe{to{clip-path:circle(78% at 50% 50%)}}
+  .s7 .inner{position:relative;z-index:2}
+  .s7 h2{font-size:calc(var(--u)*4.2)}
+  .s7 p{font-size:calc(var(--u)*2.2);line-height:2.1;max-width:74%}
+  .s7 .big{font-size:calc(var(--u)*3);color:var(--ink);font-weight:700}
+  .s7 .car-wrap{position:absolute;right:calc(var(--u)*6);bottom:calc(var(--u)*2);width:40%;opacity:.92;z-index:1}
+
+  /* ---------- 三缺一 ---------- */
+  .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*3.2);margin-top:calc(var(--u)*1)}
+  .tri .card{padding:calc(var(--u)*2.4);border-top:2px solid var(--red)}
+  .tri h4{font-size:calc(var(--u)*2.2);margin:0 0 calc(var(--u)*1.2);font-weight:600}
+  .tri p{font-size:calc(var(--u)*1.6);line-height:1.9;opacity:.8}
+  .tri .quote{display:block;margin-top:calc(var(--u)*1);font-size:calc(var(--u)*1.45);opacity:.6}
+
+  /* ---------- 结尾 ---------- */
+  .s9 p{font-size:calc(var(--u)*3.2);line-height:2;font-weight:500}
+  .s9 .endline{width:100%;height:2px;background:var(--red);margin:calc(var(--u)*3) 0 0;transform-origin:left}
+  .is-active.s9 .endline{animation:shrink 1.4s var(--ease) forwards}
+  @keyframes shrink{from{transform:scaleX(1)}to{transform:scaleX(.02)}}
+
+  /* ---------- 入场 ---------- */
+  [data-anim]{opacity:0;transform:translateY(calc(var(--u)*1.6))}
+  .is-active [data-anim]{animation:fadeUp .8s var(--ease) forwards}
+  .is-active [data-anim="2"]{animation-delay:.12s}
+  .is-active [data-anim="3"]{animation-delay:.24s}
+  .is-active [data-anim="4"]{animation-delay:.36s}
+  .is-active [data-anim="5"]{animation-delay:.48s}
+  @keyframes fadeUp{to{opacity:1;transform:none}}
+  .no-anim [data-anim]{opacity:1;transform:none;animation:none!important}
+
+  /* ---------- 顶部进度 / 页码 / 导航 ---------- */
+  #bar{position:fixed;left:0;top:0;height:2px;background:var(--red);width:11.1%;transition:width .5s var(--ease);z-index:20}
+  #pager{
+    position:fixed;right:calc(env(safe-area-inset-right,0px) + 22px);top:18px;
+    font-family:Didot,"Bodoni MT",Georgia,serif;font-size:13px;letter-spacing:.18em;color:var(--paper);opacity:.6;z-index:20;
+  }
+  #dots{
+    position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+    display:flex;gap:10px;z-index:20;
+  }
+  #dots button{
+    width:22px;height:3px;padding:0;border:0;background:rgba(245,242,236,.28);cursor:pointer;transition:background .3s;
+  }
+  #dots button.on{background:var(--red)}
+  #overlay{position:fixed;inset:0;pointer-events:none;z-index:30}
+
+  @media (max-width:760px){
+    .s1 h1{font-size:calc(var(--u)*8.4)}
+    .sub{max-width:100%}
+    .bulletin{max-width:100%}
+    .s4 .car-wrap{width:42%;opacity:.35}
+    .compare{grid-template-columns:1fr;gap:calc(var(--u)*3)}
+    .mid-note{position:static;transform:none;display:inline-block;margin:calc(var(--u)*1) 0}
+    .mech{grid-template-columns:1fr;gap:calc(var(--u)*2.4)}
+    .tri{grid-template-columns:1fr;gap:calc(var(--u)*1.6)}
+    .s7 .car-wrap{opacity:.3}
+    .foot{font-size:calc(var(--u)*1.3)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #deck{transition:none}
+    *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  }
+  @media print{
+    html,body{overflow:visible;background:#fff}
+    #stage{position:static;display:block}
+    #deck{display:block;width:100%;height:auto;transform:none!important}
+    .slide{height:100vh;page-break-after:always;width:100%}
+    #bar,#dots,#pager{display:none}
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="deck">
+
+    <!-- 1 封面 -->
+    <section class="slide dark s1">
+      <div class="cover" data-anim="1">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <g id="p">
+              <circle cx="50" cy="24" r="19"/>
+              <path d="M10 140c0-28 18-48 40-48s40 20 40 48z"/>
+            </g>
+            <g id="carShape">
+              <path d="M22 106h276c7 0 12-5 12-12v-6c0-9-6-16-15-19l-40-10-24-20c-6-5-13-7-21-7H130c-8 0-16 3-21 9l-21 22-42 9c-10 2-16 10-16 19v3c0 6 4 12 10 12z" fill="#F5F2EC"/>
+              <path d="M132 34h44l15 22h-74zM264 56h16l24 10h-48z" fill="#0B0B0B"/>
+              <circle cx="104" cy="108" r="17" fill="#0B0B0B" stroke="#F5F2EC" stroke-width="4"/>
+              <circle cx="258" cy="108" r="17" fill="#0B0B0B" stroke="#F5F2EC" stroke-width="4"/>
+              <g fill="#0B0B0B">
+                <circle cx="152" cy="60" r="7"/>
+                <path d="M138 76c0-8 6-13 14-13s14 5 14 13z"/>
+              </g>
+              <g fill="#0B0B0B" opacity=".9">
+                <rect x="150" y="12" width="9" height="14" rx="2"/>
+                <rect x="163" y="14" width="9" height="14" rx="2"/>
+                <rect x="176" y="11" width="9" height="15" rx="2"/>
+              </g>
+              <circle cx="156" cy="10" r="2.6" fill="#C8102E"/>
+              <path d="M112 92h34" stroke="#C8102E" stroke-width="2.4"/>
+            </g>
+          </defs>
+
+          <!-- 人群：环绕，两侧更密 -->
+          <g fill="#F5F2EC" opacity=".10">
+            <use href="#p" x="40"  y="300" width="130" height="182"/>
+            <use href="#p" x="150" y="250" width="150" height="210"/>
+            <use href="#p" x="286" y="300" width="130" height="182"/>
+            <use href="#p" x="400" y="230" width="160" height="224"/>
+            <use href="#p" x="1200" y="240" width="150" height="210"/>
+            <use href="#p" x="1320" y="290" width="140" height="196"/>
+            <use href="#p" x="1440" y="300" width="130" height="182"/>
+          </g>
+          <g fill="#F5F2EC" opacity=".18">
+            <use href="#p" x="60"  y="470" width="180" height="252"/>
+            <use href="#p" x="230" y="430" width="200" height="280"/>
+            <use href="#p" x="410" y="470" width="180" height="252"/>
+            <use href="#p" x="1170" y="450" width="190" height="266"/>
+            <use href="#p" x="1350" y="470" width="180" height="252"/>
+          </g>
+          <g fill="#F5F2EC" opacity=".26">
+            <use href="#p" x="70"  y="650" width="240" height="336"/>
+            <use href="#p" x="300" y="620" width="260" height="364"/>
+            <use href="#p" x="1090" y="630" width="250" height="350"/>
+            <use href="#p" x="1330" y="650" width="240" height="336"/>
+          </g>
+          <!-- 举起的手机屏 -->
+          <g fill="#F5F2EC" opacity=".5">
+            <rect x="352" y="600" width="26" height="46" rx="4"/>
+            <rect x="1192" y="588" width="26" height="46" rx="4"/>
+            <rect x="214" y="424" width="22" height="38" rx="3" opacity=".7"/>
+          </g>
+
+          <!-- 车 -->
+          <g data-morph="car" class="js-car">
+            <use href="#carShape" x="490" y="300" width="620" height="270"/>
+          </g>
+        </svg>
+      </div>
+      <div class="cap">
+        <p class="kicker" data-anim="2">2026 · 武汉 · 万圣夜</p>
+        <h1 data-anim="3">四小时，<br>一辆车的两种版本</h1>
+        <p class="sub" data-anim="4">从一条网传视频，到一份警情通报</p>
+      </div>
+    </section>
+
+    <!-- 2 目录 -->
+    <section class="slide dark s2">
+      <p class="kicker">目录</p>
+      <h2 data-anim="1">三个问题</h2>
+      <div class="toc">
+        <div class="toc-row" data-anim="2"><span class="n">01</span><span class="t">传言怎么说</span><span class="rule"></span></div>
+        <div class="toc-row" data-anim="3"><span class="n">02</span><span class="t">现场是什么</span><span class="rule"></span></div>
+        <div class="toc-row" data-anim="4"><span class="n">03</span><span class="t">差异从哪来</span><span class="rule"></span></div>
+      </div>
+      <p class="foot">按 → 或点击下方短横线翻页</p>
+    </section>
+
+    <!-- 3 谜面 -->
+    <section class="slide dark s3">
+      <p class="kicker">案例 · 传言</p>
+      <h2 data-anim="1">网上流传的那个版本</h2>
+      <div class="wall">
+        <div class="ghost-car" data-morph="car" aria-hidden="true">
+          <svg viewBox="0 0 620 270"><use href="#carShape" x="0" y="0" width="620" height="270"/></svg>
+        </div>
+        <p class="wall-item big red" data-anim="2">砸了窗</p>
+        <p class="wall-item" data-anim="3">放了气</p>
+        <p class="wall-item" data-anim="3">车身涂满脏话</p>
+        <p class="wall-item" data-anim="4">一辆车在人群里困了四小时</p>
+        <p class="wall-item" data-anim="5">面目全非</p>
+        <p class="tag" data-anim="5">以上均为当时的网传表述</p>
+      </div>
+      <p class="foot">网传内容仅作呈现，不代表事实认定</p>
+    </section>
+
+    <!-- 4 通报 -->
+    <section class="slide light s4">
+      <div class="rule-red"></div>
+      <p class="kicker">案例 · 现场</p>
+      <h2 data-anim="1">通报里的四小时</h2>
+      <div class="bulletin">
+        <div class="row" data-anim="2"><span class="k">10.31</span><span>17 时许，扬子街与胜利街交会路口</span></div>
+        <div class="row" data-anim="2"><span class="k">地点</span><span>该路段人流量大，车辆滞留路中</span></div>
+        <div class="row" data-anim="3"><span class="k">行为</span><span>行人按压右后轮气门芯、手拍后视镜、在车身放置杂物</span></div>
+        <div class="row" data-anim="4"><span class="k">结论</span><span class="hl">经勘查调查，车身没有受损</span></div>
+        <div class="row" data-anim="5"><span class="k">处理</span><span>1 人治安处罚，3 人批评教育</span></div>
+      </div>
+      <div class="car-wrap" data-morph="car" aria-hidden="true">
+        <svg viewBox="0 0 620 270"><use href="#carShape" x="0" y="0" width="620" height="270"/></svg>
+      </div>
+      <p class="foot">来源：武汉市公安局江岸区分局警情通报，11 月 2 日晚</p>
+    </section>
+
+    <!-- 5 对照 -->
+    <section class="slide light s5">
+      <div class="halves" aria-hidden="true">
+        <svg viewBox="0 0 620 270"><use href="#carShape" width="620" height="270"/></svg>
+      </div>
+      <p class="kicker">案例 · 对照</p>
+      <h2 data-anim="1">两个版本，逐条对照</h2>
+      <div class="compare">
+        <div class="col" data-anim="2">
+          <h3>网传 ／ 报道</h3>
+          <ul>
+            <li><u>砸车窗</u></li>
+            <li><u>给轮胎放气</u></li>
+            <li><u>车身涂写辱骂文字</u></li>
+            <li>众人围堵</li>
+          </ul>
+        </div>
+        <div class="col" data-anim="3">
+          <h3>警方通报</h3>
+          <ul>
+            <li>所列行为中<u>未提砸窗</u></li>
+            <li><u>按压右后轮气门芯</u></li>
+            <li><u>未提及涂鸦</u></li>
+            <li>1 人处罚、3 人批评教育</li>
+          </ul>
+        </div>
+        <span class="mid-note">同一件事，四种说法</span>
+      </div>
+      <p class="foot">左栏据媒体报道；右栏据警情通报原文</p>
+    </section>
+
+    <!-- 6 落差 -->
+    <section class="slide dark s6">
+      <p class="kicker">案例 · 机制</p>
+      <h2 data-anim="1">落差是怎么产生的</h2>
+      <div class="mech">
+        <div class="node">
+          <span class="no">01</span>
+          <h4>只拍局部</h4>
+          <p>首发视频多是车轮、车顶、人墙，没有前后文。观众看见的是一个被切断的瞬间。</p>
+        </div>
+        <div class="node">
+          <span class="no">02</span>
+          <h4>标题先给结论</h4>
+          <p>「砸烂」「围殴」出现在事实之前。标题一旦定调，后面的画面都在为它作证。</p>
+        </div>
+        <div class="node">
+          <span class="no">03</span>
+          <h4>搬运层层加码</h4>
+          <p>原声被嫁接、字幕被重写、旧素材被混剪。每一次转发，都离现场更远一步。</p>
+        </div>
+      </div>
+      <p class="mech-tail" data-anim="4">连「这辆车该不该出现在这条路上」，网上也有两种说法——<b>没有一方掌握完整信息，但每一方都在下结论。</b></p>
+      <p class="foot">传播数据：社交平台讨论占比 94.8%（第三方舆情监测，样本口径未公开）</p>
+    </section>
+
+    <!-- 7 反转 -->
+    <section class="slide red s7">
+      <div class="veil" aria-hidden="true"></div>
+      <div class="car-wrap" aria-hidden="true">
+        <svg viewBox="0 0 620 270"><use href="#carShape" width="620" height="270"/></svg>
+      </div>
+      <div class="inner">
+        <p class="kicker">案例 · 反转</p>
+        <h2 data-anim="1">通报之后，<br>故事又反转一次</h2>
+        <p data-anim="2">一部分人接受「车身未受损」；<br>一部分人转向质疑：四小时里为什么没人疏导。</p>
+        <p class="big" data-anim="3">真正受损的，不是车漆。</p>
+      </div>
+    </section>
+
+    <!-- 8 追问 -->
+    <section class="slide dark s8">
+      <p class="kicker">案例 · 追问</p>
+      <h2 data-anim="1">三方各缺一块</h2>
+      <div class="tri">
+        <div class="card" data-anim="2">
+          <h4>平台</h4>
+          <p>导航导得进，带不出。</p>
+          <span class="quote">回应仅一句「车是租的，目前状态还行」（据澎湃新闻报道）</span>
+        </div>
+        <div class="card" data-anim="3">
+          <h4>现场</h4>
+          <p>1 人治安处罚，3 人批评教育。</p>
+          <span class="quote">四小时里，没有疏导记录</span>
+        </div>
+        <div class="card" data-anim="4">
+          <h4>传播</h4>
+          <p>讨论几乎全部发生在社交平台。</p>
+          <span class="quote">放大者无人负责</span>
+        </div>
+      </div>
+      <p class="foot">处罚信息据警情通报；平台回应为单一来源转述</p>
+    </section>
+
+    <!-- 9 结尾 -->
+    <section class="slide dark s9">
+      <p class="kicker">结尾</p>
+      <h2 data-anim="1">事实走得比传言慢</h2>
+      <p data-anim="2">车漆可以没坏<br>判断已经坏了</p>
+      <div class="endline"></div>
+      <p class="foot">案例：2026.10.31 武汉江汉路　｜　依据：江岸区警方警情通报、武公交规〔2026〕15 号</p>
+    </section>
+
+  </div>
+  <div id="overlay"></div>
+</div>
+
+<div id="bar"></div>
+<div id="pager">01 / 09</div>
+<div id="dots"></div>
+
+<script>
+(function(){
+  const deck = document.getElementById('deck');
+  const slides = Array.from(deck.querySelectorAll('.slide'));
+  const dots = document.getElementById('dots');
+  const bar = document.getElementById('bar');
+  const pager = document.getElementById('pager');
+  const overlay = document.getElementById('overlay');
+  const stage = document.getElementById('stage');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let index = 0, locked = false;
+
+  function syncUnit(){
+    const w = stage.getBoundingClientRect().width;
+    document.documentElement.style.setProperty('--u', (w/100) + 'px');
+  }
+
+  slides.forEach((s,i)=>{
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', '第 ' + (i+1) + ' 页');
+    b.addEventListener('click', ()=>go(i));
+    dots.appendChild(b);
+  });
+  const dotEls = Array.from(dots.children);
+
+  function activate(i){
+    slides.forEach((s,k)=>{
+      s.classList.toggle('is-active', k===i);
+      s.setAttribute('aria-hidden', k===i ? 'false' : 'true');
+    });
+    dotEls.forEach((d,k)=>d.classList.toggle('on', k===i));
+    bar.style.width = ((i+1)/slides.length*100) + '%';
+    pager.textContent = String(i+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+  }
+
+  function morphPairs(from, to){
+    if (!from || !to || reduce) return [];
+    const pairs = [];
+    to.querySelectorAll('[data-morph]').forEach(target=>{
+      const id = target.getAttribute('data-morph');
+      const src = from.querySelector('[data-morph="'+id+'"]');
+      if (!src) return;
+      const a = src.getBoundingClientRect();
+      const b = target.getBoundingClientRect();
+      if (!a.width || !b.width) return;
+      pairs.push({src, target, a, b});
+    });
+    return pairs;
+  }
+
+  function go(n){
+    n = Math.max(0, Math.min(slides.length-1, n));
+    if (n === index || locked) return;
+    const from = slides[index];
+    const to = slides[n];
+    const pairs = morphPairs(from, to);
+
+    locked = true;
+    pairs.forEach(({src, target, a, b})=>{
+      const clone = src.cloneNode(true);
+      clone.className += ' morph-clone';
+      clone.style.cssText = [
+        'position:fixed',
+        'left:'+a.left+'px',
+        'top:'+a.top+'px',
+        'width:'+a.width+'px',
+        'height:'+a.height+'px',
+        'margin:0',
+        'pointer-events:none',
+        'z-index:40'
+      ].join(';');
+      overlay.appendChild(clone);
+      src.style.visibility = 'hidden';
+      target.style.visibility = 'hidden';
+      const dx = b.left - a.left, dy = b.top - a.top;
+      const sx = b.width / a.width, sy = b.height / a.height;
+      clone.style.transformOrigin = 'top left';
+      clone.style.transition = 'transform .8s var(--ease)';
+      requestAnimationFrame(()=>{
+        clone.style.transform = 'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')';
+      });
+      setTimeout(()=>{
+        clone.remove();
+        target.style.visibility = '';
+        src.style.visibility = '';
+      }, 820);
+    });
+
+    deck.style.transform = 'translateX(' + (-n*100) + '%)';
+    index = n;
+    activate(n);
+    setTimeout(()=>{ locked = false; }, reduce ? 0 : 820);
+  }
+
+  document.addEventListener('keydown', e=>{
+    if (['ArrowRight','ArrowDown','PageDown',' ','Spacebar','Enter'].includes(e.key)) { e.preventDefault(); go(index+1); }
+    else if (['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)) { e.preventDefault(); go(index-1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(slides.length-1); }
+  });
+
+  let sx = 0, sy = 0;
+  document.addEventListener('touchstart', e=>{
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', e=>{
+    const dx = e.changedTouches[0].clientX - sx;
+    const dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
+  }, {passive:true});
+
+  window.addEventListener('resize', ()=>{ syncUnit(); });
+
+  syncUnit();
+  activate(0);
+  slides[0].classList.add('is-active');
+})();
+</script>
+</body>
+</html>
