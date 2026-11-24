@@ -70,16 +70,16 @@
   }
 
   /* ================= 封面 ================= */
-  .s1{display:grid;grid-template-rows:62% 38%;padding:0}
-  .s1 .art{position:relative;background:var(--paper);overflow:hidden}
+  .s1{position:relative;padding:0;display:block}
+  .s1 .art{position:absolute;left:0;right:0;top:0;bottom:42%;background:var(--paper);overflow:hidden}
   .s1 .art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-  .s1 .band{background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:calc(var(--u)*3.4) calc(var(--u)*6)}
-  .s1 h1{font-size:calc(var(--u)*7.6);color:var(--paper)}
+  .s1 .band{position:absolute;left:0;right:0;bottom:0;height:42%;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:calc(var(--u)*2.2) calc(var(--u)*6)}
+  .s1 h1{font-size:calc(var(--u)*5.8);line-height:1.08;color:var(--paper)}
   .s1 .sub{
-    font-size:calc(var(--u)*1.85);color:var(--paper);opacity:.66;
-    margin-top:calc(var(--u)*1.6);letter-spacing:.02em;
+    font-size:calc(var(--u)*1.55);color:var(--paper);opacity:.66;
+    margin-top:calc(var(--u)*1.1);letter-spacing:.02em;
   }
-  .s1 .kicker{color:var(--red);margin-bottom:calc(var(--u)*1.2)}
+  .s1 .kicker{font-size:calc(var(--u)*1.02);color:var(--red);margin-bottom:calc(var(--u)*1)}
 
   /* ================= 目录 ================= */
   .s2{padding:0}
@@ -106,8 +106,8 @@
   .s3 .stack{position:absolute;left:calc(var(--u)*6);top:calc(var(--u)*9);z-index:3}
   .s3 .stack p{font-size:calc(var(--u)*3.4);font-weight:700;line-height:1.32;margin:0 0 calc(var(--u)*.4);letter-spacing:-.01em}
   .s3 .oncar{
-    position:absolute;right:calc(var(--u)*4);bottom:34%;z-index:4;
-    color:var(--ink);font-size:calc(var(--u)*7.2);font-weight:700;letter-spacing:-.02em;line-height:1
+    position:absolute;right:11%;bottom:45%;z-index:4;
+    color:var(--ink);font-size:calc(var(--u)*6.1);font-weight:700;letter-spacing:-.02em;line-height:1
   }
   .s3 .mark{background:var(--red);color:var(--paper);padding:0 calc(var(--u)*.7)}
   .s3 .kicker{position:absolute;left:calc(var(--u)*6);top:calc(var(--u)*5);z-index:4;margin:0}
@@ -115,7 +115,7 @@
 
   /* ================= 通报 ================= */
   .s4{padding:0}
-  .s4 .rule{position:absolute;left:0;right:0;top:26%;height:6px;background:var(--red);transform:scaleX(0);transform-origin:left;z-index:3}
+  .s4 .rule{position:absolute;left:0;right:0;top:13%;height:6px;background:var(--red);transform:scaleX(0);transform-origin:left;z-index:3}
   .is-active .s4 .rule,.s4.is-active .rule{animation:grow 1.2s var(--ease) .1s forwards}
   @keyframes grow{to{transform:scaleX(1)}}
   .s4 .txt{position:relative;z-index:4;padding:calc(var(--u)*4) calc(var(--u)*6);max-width:56%}
@@ -176,17 +176,18 @@
   /* ================= 三方 ================= */
   .s8{padding:0}
   .s8 .three{position:absolute;inset:0}
-  .s8 .fig{position:absolute;bottom:-6%;width:34%;z-index:1;opacity:.95}
+  .s8 .fig{position:absolute;bottom:-6%;width:30%;z-index:1;opacity:.95}
   .s8 .fig svg{width:100%;height:auto;display:block}
-  .s8 .fig.a{left:-6%}
-  .s8 .fig.b{left:33%;width:32%}
+  .s8 .fig.a{left:-5%}
+  .s8 .fig.b{left:35%;width:28%}
   .s8 .fig.c{right:-6%}
-  .s8 .tri-lines{position:absolute;inset:0;z-index:2}
+  .s8 .tri-lines{position:absolute;inset:0;z-index:0}
   .s8 .labels{position:absolute;inset:0;z-index:3;padding:calc(var(--u)*5) calc(var(--u)*6)}
   .s8 .lab{position:absolute;width:26%}
-  .s8 .lab.a{left:2%;top:16%}
-  .s8 .lab.b{left:37%;top:12%}
-  .s8 .lab.c{right:2%;top:18%;text-align:right}
+  .s8 .lab.a{left:2%;top:30%}
+  .s8 .lab.b{left:37%;top:26%}
+  .s8 .lab.c{right:2%;top:31%;text-align:right}
+  .s8 .foot{left:auto;right:calc(var(--u)*6);top:calc(var(--u)*5.4);bottom:auto;width:46%;text-align:right;opacity:.4}
   .s8 .lab h4{font-size:calc(var(--u)*2.6);margin:0 0 calc(var(--u)*.8);font-weight:700}
   .s8 .lab p{font-size:calc(var(--u)*1.45);line-height:1.75;opacity:.8}
   .s8 .title{position:absolute;left:calc(var(--u)*6);top:calc(var(--u)*4.4);z-index:4}
@@ -224,7 +225,8 @@
   #overlay{position:fixed;inset:0;pointer-events:none;z-index:30}
 
   @media (max-width:760px){
-    .s1{grid-template-rows:56% 44%}
+    .s1 .art{bottom:48%}
+    .s1 .band{height:48%;padding:calc(var(--u)*2) calc(var(--u)*5)}
     .s3 .car-big{width:96%;top:20%}
     .s3 .oncar{font-size:calc(var(--u)*6)}
     .s4 .txt{max-width:100%;padding-top:calc(var(--u)*9)}
@@ -259,60 +261,73 @@
     <!-- 1 封面 -->
     <section class="slide dark s1">
       <div class="art">
-        <svg viewBox="0 0 1600 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <svg viewBox="0 0 1600 522" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
           <defs>
             <symbol id="p" viewBox="0 0 100 140">
-              <circle cx="50" cy="22" r="20"/>
-              <path d="M4 140c0-30 20-52 46-52s46 22 46 52z"/>
+              <circle cx="50" cy="30" r="21" fill="var(--body,#070707)"/>
+              <path d="M50 44c8 0 14 4 16 11l3 9c11 5 18 16 18 29v47H13V93c0-13 7-24 18-29l3-9c2-7 8-11 16-11z" fill="var(--body,#070707)"/>
             </symbol>
-            <symbol id="pPhone" viewBox="0 0 100 140">
-              <use href="#p" width="100" height="140"/>
-              <rect x="74" y="4" width="20" height="34" rx="2"/>
+            <symbol id="pPhone" viewBox="0 0 100 160">
+              <use href="#p" y="20" width="100" height="140"/>
+              <path d="M68 112 L84 46" stroke="var(--body,#070707)" stroke-width="12" stroke-linecap="round" fill="none"/>
+              <rect x="75" y="4" width="21" height="34" rx="3" fill="var(--body,#070707)"/>
             </symbol>
             <symbol id="carShape" viewBox="0 0 320 140">
+              <clipPath id="carTop"><rect x="-20" y="-20" width="360" height="123"/></clipPath>
               <path d="M22 106h276c7 0 12-5 12-12v-6c0-9-6-16-15-19l-40-10-24-20c-6-5-13-7-21-7H130c-8 0-16 3-21 9l-21 22-42 9c-10 2-16 10-16 19v3c0 6 4 12 10 12z" fill="var(--body,#F5F2EC)"/>
+              <path d="M22 106h276c7 0 12-5 12-12v-6c0-9-6-16-15-19l-40-10-24-20c-6-5-13-7-21-7H130c-8 0-16 3-21 9l-21 22-42 9c-10 2-16 10-16 19v3c0 6 4 12 10 12z" fill="none" stroke="var(--line,none)" stroke-width="2" clip-path="url(#carTop)"/>
               <path d="M132 34h44l15 22h-74zM264 56h16l24 10h-48z" fill="var(--win,#070707)"/>
               <circle cx="104" cy="108" r="17" fill="var(--tyre,#070707)" stroke="var(--body,#F5F2EC)" stroke-width="4"/>
               <circle cx="258" cy="108" r="17" fill="var(--tyre,#070707)" stroke="var(--body,#F5F2EC)" stroke-width="4"/>
               <g fill="var(--drv,#070707)">
-                <circle cx="152" cy="58" r="7"/>
-                <path d="M137 76c0-8 7-14 15-14s15 6 15 14z"/>
+                <circle cx="151" cy="44" r="8"/>
+                <path d="M135 62c0-9 7-16 16-16s16 7 16 16z"/>
               </g>
               <g fill="var(--roof,#070707)">
-                <rect x="150" y="12" width="9" height="14" rx="2"/>
-                <rect x="163" y="14" width="9" height="14" rx="2"/>
-                <rect x="176" y="11" width="9" height="15" rx="2"/>
+                <rect x="150" y="19" width="9" height="14" rx="2"/>
+                <rect x="163" y="21" width="9" height="14" rx="2"/>
+                <rect x="176" y="18" width="9" height="15" rx="2"/>
               </g>
-              <circle cx="156" cy="10" r="2.8" fill="#C8102E"/>
-              <path d="M112 92h34" stroke="#C8102E" stroke-width="2.6"/>
+              <circle cx="156" cy="17" r="2.8" fill="#C8102E"/>
+              <path d="M42 92h34" stroke="#C8102E" stroke-width="2.6"/>
             </symbol>
           </defs>
 
-          <!-- 人群：纯黑，100%，贴近镜头，出血 -->
-          <g fill="#070707">
-            <use href="#p" x="-40" y="330" width="300" height="420"/>
-            <use href="#p" x="230" y="290" width="330" height="462"/>
-            <use href="#p" x="520" y="350" width="280" height="392"/>
-            <use href="#p" x="760" y="300" width="320" height="448"/>
-            <use href="#p" x="1040" y="340" width="300" height="420"/>
-            <use href="#p" x="1300" y="280" width="340" height="476"/>
-            <use href="#p" x="1560" y="330" width="300" height="420"/>
+          <!-- 后景人群 -->
+          <g fill="var(--body,#070707)" opacity=".86">
+            <use href="#p" x="-60" y="222" width="214" height="300"/>
+            <use href="#p" x="145" y="216" width="214" height="300"/>
+            <use href="#p" x="350" y="224" width="214" height="300"/>
+            <use href="#p" x="555" y="214" width="214" height="300"/>
+            <use href="#p" x="760" y="222" width="214" height="300"/>
+            <use href="#p" x="965" y="216" width="214" height="300"/>
+            <use href="#p" x="1170" y="224" width="214" height="300"/>
+            <use href="#p" x="1375" y="214" width="214" height="300"/>
+            <use href="#p" x="1580" y="222" width="214" height="300"/>
           </g>
-          <g fill="#070707" opacity=".92">
-            <use href="#pPhone" x="150" y="196" width="250" height="350"/>
-            <use href="#p" x="430" y="230" width="260" height="364"/>
-            <use href="#pPhone" x="940" y="206" width="250" height="350"/>
-            <use href="#p" x="1160" y="240" width="260" height="364"/>
-            <use href="#pPhone" x="1420" y="200" width="250" height="350"/>
-          </g>
-          <g fill="#070707">
-            <use href="#p" x="40" y="150" width="200" height="280" opacity=".9"/>
-            <use href="#p" x="1360" y="150" width="200" height="280" opacity=".9"/>
+
+          <!-- 中景人群 -->
+          <g fill="var(--body,#070707)">
+            <use href="#p" x="-100" y="102" width="300" height="420"/>
+            <use href="#pPhone" x="176" y="70" width="266" height="452"/>
+            <use href="#p" x="466" y="108" width="300" height="420"/>
+            <use href="#p" x="756" y="96" width="300" height="420"/>
+            <use href="#pPhone" x="1032" y="74" width="266" height="448"/>
+            <use href="#p" x="1326" y="104" width="300" height="420"/>
+            <use href="#p" x="1616" y="98" width="300" height="420"/>
           </g>
 
           <!-- 车：黑剪影，窗为纸白，司机为黑 -->
-          <g data-morph="car" style="--body:#070707;--win:#F5F2EC;--tyre:#070707;--drv:#070707;--roof:#070707">
-            <use href="#carShape" x="520" y="250" width="580" height="253"/>
+          <g data-morph="car" style="--body:#070707;--win:#F5F2EC;--tyre:#070707;--drv:#070707;--roof:#070707;--line:#F5F2EC">
+            <use href="#carShape" x="360" y="257" width="800" height="350"/>
+          </g>
+
+          <!-- 前景人群（近距离，边缘出血） -->
+          <g fill="var(--body,#070707)">
+            <use href="#p" x="-170" y="2" width="371" height="520"/>
+            <use href="#pPhone" x="150" y="-36" width="330" height="558"/>
+            <use href="#p" x="1090" y="6" width="371" height="520"/>
+            <use href="#pPhone" x="1408" y="-30" width="330" height="552"/>
           </g>
         </svg>
       </div>
@@ -340,7 +355,7 @@
     <section class="slide dark s3">
       <p class="kicker">案例 · 传言</p>
       <div class="car-big" data-morph="car" aria-hidden="true">
-        <svg viewBox="0 0 620 270" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#070707">
+        <svg viewBox="0 0 620 270" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#F5F2EC">
           <use href="#carShape" width="620" height="270"/>
         </svg>
       </div>
@@ -368,7 +383,7 @@
         <div class="row"><span class="k">处理</span><span>1 人治安处罚，3 人批评教育</span></div>
       </div>
       <div class="car-wrap" aria-hidden="true">
-        <svg viewBox="0 0 620 270" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#070707">
+        <svg viewBox="0 0 620 270" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#F5F2EC">
           <use href="#carShape" width="620" height="270"/>
         </svg>
       </div>
@@ -472,19 +487,19 @@
           </g></svg>
         </div>
         <div class="fig b" aria-hidden="true">
-          <svg viewBox="0 0 300 260"><g fill="#F5F2EC">
+          <svg viewBox="0 0 300 260"><g style="--body:#F5F2EC">
             <use href="#p" x="0" y="40" width="110" height="154"/>
             <use href="#pPhone" x="95" y="10" width="120" height="168"/>
             <use href="#p" x="200" y="50" width="100" height="140"/>
           </g></svg>
         </div>
         <div class="fig c" aria-hidden="true">
-          <svg viewBox="0 0 300 260" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#070707"><use href="#carShape" x="0" y="60" width="300" height="131"/></svg>
+          <svg viewBox="0 0 300 260" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#F5F2EC"><use href="#carShape" x="0" y="60" width="300" height="131"/></svg>
         </div>
         <svg class="tri-lines" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
-          <g stroke="#C8102E" stroke-width="6" fill="none">
-            <path d="M430 560 L800 790 L1180 560"/>
-            <path d="M430 560 L1180 560"/>
+          <g stroke="#C8102E" stroke-width="3" fill="none" opacity=".85">
+            <path d="M40 450 H1540"/>
+            <path d="M40 438 V462 M592 438 V462 M1540 438 V462"/>
           </g>
         </svg>
       </div>
