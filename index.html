@@ -7,16 +7,15 @@
 <title>四小时，一辆车的两种版本</title>
 <style>
   :root{
-    --ink:#0B0B0B;
-    --ink-2:#17171A;
+    --ink:#070707;
     --paper:#F5F2EC;
     --red:#C8102E;
-    --grey:#8A8A8A;
     --u:8px;
+    --dur:.6s;
     --ease:cubic-bezier(.4,0,.2,1);
   }
   *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:#050505;overflow:hidden}
+  html,body{margin:0;height:100%;background:#000;overflow:hidden}
   body{
     color:var(--paper);
     font-family:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",serif;
@@ -28,209 +27,217 @@
     width:min(100vw,177.78vh);
     height:min(56.25vw,100vh);
     display:flex;
-    transition:transform .8s var(--ease);
+    transition:transform var(--dur) var(--ease);
     will-change:transform;
   }
   .slide{
-    flex:0 0 100%;
-    height:100%;
-    position:relative;
-    overflow:hidden;
-    padding:calc(var(--u)*7) calc(var(--u)*8);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
+    flex:0 0 100%;height:100%;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:calc(var(--u)*6) calc(var(--u)*6);
   }
-  .slide.dark{background:var(--ink);color:var(--paper)}
-  .slide.light{background:var(--paper);color:var(--ink)}
-  .slide.red{background:var(--red);color:var(--paper)}
+  .dark{background:var(--ink);color:var(--paper)}
+  .light{background:var(--paper);color:var(--ink)}
+  .red{background:var(--red);color:var(--paper)}
 
   .kicker{
-    font-family:Didot,"Bodoni MT","Times New Roman",Georgia,serif;
-    font-size:calc(var(--u)*1.35);
-    letter-spacing:.38em;
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:calc(var(--u)*1.15);
+    letter-spacing:.42em;
     color:var(--red);
-    margin:0 0 calc(var(--u)*2);
-  }
-  .slide.red .kicker{color:var(--paper);opacity:.75}
-  h1{
-    font-size:calc(var(--u)*7.2);
-    line-height:1.16;
-    margin:0;
+    margin:0 0 calc(var(--u)*1.6);
     font-weight:600;
-    letter-spacing:.015em;
+  }
+  .red .kicker,.light .kicker{color:var(--red)}
+  h1{
+    font-size:calc(var(--u)*8.4);
+    line-height:1.02;
+    margin:0;
+    font-weight:700;
+    letter-spacing:-.02em;
   }
   h2{
-    font-size:calc(var(--u)*4.6);
-    line-height:1.25;
-    margin:0 0 calc(var(--u)*3.4);
-    font-weight:600;
+    font-size:calc(var(--u)*6.4);
+    line-height:1.06;
+    margin:0 0 calc(var(--u)*2.6);
+    font-weight:700;
+    letter-spacing:-.02em;
   }
-  p{font-size:calc(var(--u)*2.05);line-height:1.95;margin:0}
-  .sub{font-size:calc(var(--u)*1.95);line-height:1.9;margin-top:calc(var(--u)*2.6);max-width:62%}
+  p{font-size:calc(var(--u)*2);line-height:1.85;margin:0}
   .foot{
-    position:absolute;
-    left:calc(var(--u)*8);
-    right:calc(var(--u)*8);
-    bottom:calc(var(--u)*3.4);
+    position:absolute;left:calc(var(--u)*6);right:calc(var(--u)*6);bottom:calc(var(--u)*2.6);
     font-family:"PingFang SC","Microsoft YaHei",sans-serif;
-    font-size:calc(var(--u)*1.02);
-    letter-spacing:.02em;
-    opacity:.5;
+    font-size:calc(var(--u)*.95);letter-spacing:.03em;opacity:.42;
   }
-  .num{
+
+  /* ================= 封面 ================= */
+  .s1{display:grid;grid-template-rows:62% 38%;padding:0}
+  .s1 .art{position:relative;background:var(--paper);overflow:hidden}
+  .s1 .art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .s1 .band{background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:calc(var(--u)*3.4) calc(var(--u)*6)}
+  .s1 h1{font-size:calc(var(--u)*7.6);color:var(--paper)}
+  .s1 .sub{
+    font-size:calc(var(--u)*1.85);color:var(--paper);opacity:.66;
+    margin-top:calc(var(--u)*1.6);letter-spacing:.02em;
+  }
+  .s1 .kicker{color:var(--red);margin-bottom:calc(var(--u)*1.2)}
+
+  /* ================= 目录 ================= */
+  .s2{padding:0}
+  .s2 .toc-main{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;padding-left:calc(var(--u)*6)}
+  .s2 .row{display:flex;align-items:center;gap:calc(var(--u)*2);position:relative;z-index:2}
+  .s2 .row+.row{margin-top:calc(var(--u)*.6)}
+  .s2 .n{
     font-family:Didot,"Bodoni MT",Georgia,serif;
+    font-size:calc(var(--u)*19);
+    line-height:.92;
     color:var(--red);
-    font-variant-numeric:tabular-nums;
+    letter-spacing:-.04em;
   }
+  .s2 .t{font-size:calc(var(--u)*2.5);letter-spacing:.06em;padding-bottom:calc(var(--u)*1.2)}
+  .s2 .hrule{position:absolute;left:calc(var(--u)*6);right:0;height:2px;background:var(--paper);opacity:.16}
+  .s2 .hrule.a{top:31%}
+  .s2 .hrule.b{top:56%}
+  .s2 h2{position:absolute;right:calc(var(--u)*6);top:calc(var(--u)*5);font-size:calc(var(--u)*2.2);letter-spacing:.5em;color:var(--paper);opacity:.5;margin:0}
 
-  /* ---------- 封面 ---------- */
-  .s1{padding:0;justify-content:flex-end}
-  .s1 .cover{position:absolute;inset:0}
-  .s1 .cover svg{width:100%;height:100%;display:block}
-  .s1 .cap{position:relative;padding:0 calc(var(--u)*8) calc(var(--u)*8)}
-  .s1 h1{font-size:calc(var(--u)*7.6)}
-
-  /* ---------- 目录 ---------- */
-  .toc{display:grid;gap:calc(var(--u)*2.4);margin-top:calc(var(--u)*1)}
-  .toc-row{display:flex;align-items:baseline;gap:calc(var(--u)*2.2)}
-  .toc-row .n{font-family:Didot,"Bodoni MT",Georgia,serif;font-size:calc(var(--u)*3.4);color:var(--red)}
-  .toc-row .t{font-size:calc(var(--u)*2.5)}
-  .toc-row .rule{flex:1;height:1px;background:currentColor;opacity:.22;transform:translateY(calc(var(--u)*-0.8))}
-
-  /* ---------- 信息墙 ---------- */
-  .wall{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center}
-  .ghost-car{position:absolute;right:0;bottom:calc(var(--u)*2);width:52%;opacity:.16}
-  .wall-item{
-    font-size:calc(var(--u)*3.1);
-    line-height:1.5;
-    margin:0 0 calc(var(--u)*2.2);
-    letter-spacing:.01em;
+  /* ================= 谣言墙 ================= */
+  .s3{padding:0}
+  .s3 .car-big{position:absolute;right:-12%;top:16%;width:72%;z-index:1}
+  .s3 .car-big svg{width:100%;height:auto;display:block}
+  .s3 .stack{position:absolute;left:calc(var(--u)*6);top:calc(var(--u)*9);z-index:3}
+  .s3 .stack p{font-size:calc(var(--u)*3.4);font-weight:700;line-height:1.32;margin:0 0 calc(var(--u)*.4);letter-spacing:-.01em}
+  .s3 .oncar{
+    position:absolute;right:calc(var(--u)*4);bottom:34%;z-index:4;
+    color:var(--ink);font-size:calc(var(--u)*7.2);font-weight:700;letter-spacing:-.02em;line-height:1
   }
-  .wall-item.big{font-size:calc(var(--u)*4.6);margin-bottom:calc(var(--u)*3)}
-  .wall-item.red{color:var(--red)}
-  .wall .tag{
-    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
-    font-size:calc(var(--u)*1.1);
-    letter-spacing:.08em;
-    opacity:.55;
-    margin-top:calc(var(--u)*2);
-  }
+  .s3 .mark{background:var(--red);color:var(--paper);padding:0 calc(var(--u)*.7)}
+  .s3 .kicker{position:absolute;left:calc(var(--u)*6);top:calc(var(--u)*5);z-index:4;margin:0}
+  .s3 .tag{position:absolute;left:calc(var(--u)*6);bottom:calc(var(--u)*7);font-size:calc(var(--u)*1.1);opacity:.5;letter-spacing:.06em;z-index:4}
 
-  /* ---------- 通报页 ---------- */
-  .bulletin{position:relative;z-index:2;max-width:66%}
-  .bulletin .row{display:flex;gap:calc(var(--u)*1.6);margin-bottom:calc(var(--u)*1.7);font-size:calc(var(--u)*1.95);line-height:1.75}
-  .bulletin .row .k{font-family:Didot,"Bodoni MT",Georgia,serif;color:var(--red);min-width:calc(var(--u)*9)}
-  .bulletin .hl{background:linear-gradient(transparent 62%, rgba(200,16,46,.18) 62%);font-weight:600}
-  .rule-red{position:absolute;left:calc(var(--u)*8);right:calc(var(--u)*8);top:calc(var(--u)*30);height:2px;background:var(--red);transform:scaleX(0);transform-origin:left}
-  .is-active .rule-red{animation:grow .9s var(--ease) .15s forwards}
+  /* ================= 通报 ================= */
+  .s4{padding:0}
+  .s4 .rule{position:absolute;left:0;right:0;top:26%;height:6px;background:var(--red);transform:scaleX(0);transform-origin:left;z-index:3}
+  .is-active .s4 .rule,.s4.is-active .rule{animation:grow 1.2s var(--ease) .1s forwards}
   @keyframes grow{to{transform:scaleX(1)}}
-  .s4 .car-wrap{position:absolute;right:calc(var(--u)*8);bottom:calc(var(--u)*8);width:34%;opacity:.9}
-
-  /* ---------- 对照 ---------- */
-  .compare{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*5);position:relative;z-index:2}
-  .col h3{
-    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
-    font-size:calc(var(--u)*1.35);
-    letter-spacing:.22em;
-    font-weight:500;
-    opacity:.7;
-    margin:0 0 calc(var(--u)*2);
+  .s4 .txt{position:relative;z-index:4;padding:calc(var(--u)*4) calc(var(--u)*6);max-width:56%}
+  .s4 .row{display:flex;gap:calc(var(--u)*1.4);font-size:calc(var(--u)*1.95);line-height:1.62;margin-bottom:calc(var(--u)*1.35)}
+  .s4 .row .k{font-family:Didot,"Bodoni MT",Georgia,serif;color:var(--red);min-width:calc(var(--u)*8.4);padding-top:calc(var(--u)*.18)}
+  .s4 .box{display:inline-block;border:2px solid var(--red);padding:calc(var(--u)*.25) calc(var(--u)*.7);color:var(--red);font-weight:700}
+  .s4 .car-wrap{position:absolute;right:-12%;bottom:-8%;width:62%;z-index:2}
+  .s4 .car-wrap::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,var(--ink) 0%,rgba(7,7,7,.9) 18%,rgba(7,7,7,0) 46%);
   }
-  .col ul{list-style:none;margin:0;padding:0}
-  .col li{font-size:calc(var(--u)*2.05);line-height:1.6;padding:calc(var(--u)*1.1) 0;border-bottom:1px solid rgba(11,11,11,.14)}
-  .col li u{text-decoration:none;border-bottom:2px solid var(--red);padding-bottom:2px}
-  .mid-note{
-    position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-    font-size:calc(var(--u)*1.5);
-    color:var(--red);
-    letter-spacing:.12em;
-    white-space:nowrap;
-    background:var(--paper);
-    padding:calc(var(--u)*.8) calc(var(--u)*1.6);
+  .s4 .car-wrap svg{width:100%;height:auto;display:block}
+
+  /* ================= 对照（唯一纸白页） ================= */
+  .s5{padding:0}
+  .s5 .divider{position:absolute;left:50%;top:-2%;bottom:-2%;width:6px;background:var(--red);transform:translateX(-50%)}
+  .s5 .cols{position:relative;z-index:3;display:grid;grid-template-columns:1fr 1fr;height:100%;padding:calc(var(--u)*9) calc(var(--u)*5) calc(var(--u)*6)}
+  .s5 .col{padding:0 calc(var(--u)*3)}
+  .s5 h3{font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:calc(var(--u)*1.3);letter-spacing:.28em;margin:0 0 calc(var(--u)*2.2);font-weight:600;opacity:.55}
+  .s5 ul{list-style:none;margin:0;padding:0}
+  .s5 li{font-size:calc(var(--u)*2.35);line-height:1.5;padding:calc(var(--u)*1.15) 0;border-bottom:1px solid rgba(7,7,7,.16);font-weight:600}
+  .s5 li span{border-bottom:3px solid var(--red)}
+  .s5 .halves{position:absolute;inset:auto 0 0 0;height:26%;z-index:1;opacity:.07}
+  .s5 .halves svg{width:100%;height:100%}
+  .s5 .kicker{position:absolute;left:calc(var(--u)*5);top:calc(var(--u)*5);z-index:4;margin:0}
+
+  /* ================= 机制 ================= */
+  .s6{padding:0}
+  .s6 .phone{position:absolute;left:-4%;top:8%;width:46%;z-index:1;opacity:.92}
+  .s6 .phone svg{width:100%;height:auto;display:block}
+  .s6 .grid{position:relative;z-index:3;margin-left:38%;padding:calc(var(--u)*8) calc(var(--u)*6) calc(var(--u)*6) 0}
+  .s6 .item{margin-bottom:calc(var(--u)*2.4);position:relative;padding-left:calc(var(--u)*2.4)}
+  .s6 .item::before{
+    content:"";position:absolute;left:0;top:calc(var(--u)*.55);
+    width:calc(var(--u)*10);height:6px;background:var(--red);
+    transform:scaleX(0);transform-origin:left;
   }
-  .halves{position:absolute;inset:calc(var(--u)*6);pointer-events:none;opacity:.1}
-  .halves svg{width:100%;height:100%}
+  .s6.is-active .item::before{animation:grow .9s var(--ease) forwards}
+  .s6.is-active .item:nth-child(2)::before{animation-delay:.25s}
+  .s6.is-active .item:nth-child(3)::before{animation-delay:.5s}
+  .s6 .item h4{font-size:calc(var(--u)*2.5);margin:0 0 calc(var(--u)*.7);font-weight:700}
+  .s6 .item p{font-size:calc(var(--u)*1.6);line-height:1.8;opacity:.78}
+  .s6 .tail{margin-top:calc(var(--u)*2.4);font-size:calc(var(--u)*2.1);line-height:1.7;font-weight:600}
+  .s6 .tail b{color:var(--red)}
 
-  /* ---------- 三条机制 ---------- */
-  .mech{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*4);margin-top:calc(var(--u)*3)}
-  .mech .node{position:relative;padding-top:calc(var(--u)*4)}
-  .mech .node::before{
-    content:"";position:absolute;left:0;top:0;width:calc(var(--u)*2.2);height:calc(var(--u)*.28);
-    background:var(--red);transform:scaleX(0);transform-origin:left;
-  }
-  .is-active .mech .node::before{animation:grow .7s var(--ease) forwards}
-  .is-active .mech .node:nth-child(2)::before{animation-delay:.25s}
-  .is-active .mech .node:nth-child(3)::before{animation-delay:.5s}
-  .mech .no{font-family:Didot,"Bodoni MT",Georgia,serif;color:var(--red);font-size:calc(var(--u)*1.5);letter-spacing:.1em}
-  .mech h4{font-size:calc(var(--u)*2.3);margin:calc(var(--u)*1.2) 0 calc(var(--u)*1);font-weight:600}
-  .mech p{font-size:calc(var(--u)*1.65);line-height:1.9;opacity:.78}
-  .mech-tail{margin-top:calc(var(--u)*4.5);font-size:calc(var(--u)*1.95);line-height:1.8;max-width:78%}
-  .mech-tail b{color:var(--red);font-weight:600}
+  /* ================= 反转 ================= */
+  .s7{padding:0;overflow:hidden}
+  .s7 .wipe{position:absolute;inset:-15%;background:var(--ink);clip-path:circle(0% at 50% 50%)}
+  .s7.is-active .wipe{animation:wipeIn .35s linear forwards}
+  @keyframes wipeIn{to{clip-path:circle(0% at 50% 50%)}}
+  .s7 .car-wrap{position:absolute;right:-18%;top:6%;width:104%;transform:rotate(-6deg);z-index:1}
+  .s7 .car-wrap svg{width:100%;height:auto;display:block}
+  .s7 .txt{position:relative;z-index:3;padding:calc(var(--u)*7) calc(var(--u)*6);max-width:70%}
+  .s7 h2{font-size:calc(var(--u)*5.6);color:var(--paper)}
+  .s7 p{font-size:calc(var(--u)*2.2);line-height:1.9;color:var(--paper);opacity:.92}
+  .s7 .big{margin-top:calc(var(--u)*2.2);font-size:calc(var(--u)*4.4);font-weight:700;color:var(--paper)}
 
-  /* ---------- 反转 ---------- */
-  .s7 .veil{position:absolute;inset:-20%;background:var(--red);clip-path:circle(0% at 50% 50%)}
-  .s7.is-active .veil{animation:wipe .9s var(--ease) forwards}
-  @keyframes wipe{to{clip-path:circle(78% at 50% 50%)}}
-  .s7 .inner{position:relative;z-index:2}
-  .s7 h2{font-size:calc(var(--u)*4.2)}
-  .s7 p{font-size:calc(var(--u)*2.2);line-height:2.1;max-width:74%}
-  .s7 .big{font-size:calc(var(--u)*3);color:var(--ink);font-weight:700}
-  .s7 .car-wrap{position:absolute;right:calc(var(--u)*6);bottom:calc(var(--u)*2);width:40%;opacity:.92;z-index:1}
+  /* ================= 三方 ================= */
+  .s8{padding:0}
+  .s8 .three{position:absolute;inset:0}
+  .s8 .fig{position:absolute;bottom:-6%;width:34%;z-index:1;opacity:.95}
+  .s8 .fig svg{width:100%;height:auto;display:block}
+  .s8 .fig.a{left:-6%}
+  .s8 .fig.b{left:33%;width:32%}
+  .s8 .fig.c{right:-6%}
+  .s8 .tri-lines{position:absolute;inset:0;z-index:2}
+  .s8 .labels{position:absolute;inset:0;z-index:3;padding:calc(var(--u)*5) calc(var(--u)*6)}
+  .s8 .lab{position:absolute;width:26%}
+  .s8 .lab.a{left:2%;top:16%}
+  .s8 .lab.b{left:37%;top:12%}
+  .s8 .lab.c{right:2%;top:18%;text-align:right}
+  .s8 .lab h4{font-size:calc(var(--u)*2.6);margin:0 0 calc(var(--u)*.8);font-weight:700}
+  .s8 .lab p{font-size:calc(var(--u)*1.45);line-height:1.75;opacity:.8}
+  .s8 .title{position:absolute;left:calc(var(--u)*6);top:calc(var(--u)*4.4);z-index:4}
+  .s8 .title h2{font-size:calc(var(--u)*3.4);margin:0}
 
-  /* ---------- 三缺一 ---------- */
-  .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*3.2);margin-top:calc(var(--u)*1)}
-  .tri .card{padding:calc(var(--u)*2.4);border-top:2px solid var(--red)}
-  .tri h4{font-size:calc(var(--u)*2.2);margin:0 0 calc(var(--u)*1.2);font-weight:600}
-  .tri p{font-size:calc(var(--u)*1.6);line-height:1.9;opacity:.8}
-  .tri .quote{display:block;margin-top:calc(var(--u)*1);font-size:calc(var(--u)*1.45);opacity:.6}
+  /* ================= 结尾 ================= */
+  .s9{justify-content:center}
+  .s9 h2{font-size:calc(var(--u)*5.4);margin-bottom:calc(var(--u)*3)}
+  .s9 p{font-size:calc(var(--u)*3.4);line-height:1.9;font-weight:600}
+  .s9 .endline{width:100%;height:6px;background:var(--red);margin-top:calc(var(--u)*4);transform-origin:left}
+  .s9.is-active .endline{animation:shrink 1.1s var(--ease) .2s forwards}
+  @keyframes shrink{from{transform:scaleX(1)}to{transform:scaleX(.012)}}
 
-  /* ---------- 结尾 ---------- */
-  .s9 p{font-size:calc(var(--u)*3.2);line-height:2;font-weight:500}
-  .s9 .endline{width:100%;height:2px;background:var(--red);margin:calc(var(--u)*3) 0 0;transform-origin:left}
-  .is-active.s9 .endline{animation:shrink 1.4s var(--ease) forwards}
-  @keyframes shrink{from{transform:scaleX(1)}to{transform:scaleX(.02)}}
-
-  /* ---------- 入场 ---------- */
-  [data-anim]{opacity:0;transform:translateY(calc(var(--u)*1.6))}
-  .is-active [data-anim]{animation:fadeUp .8s var(--ease) forwards}
+  /* ================= 入场 ================= */
+  [data-anim]{opacity:0;transform:translateY(calc(var(--u)*3))}
+  .is-active [data-anim]{animation:fadeUp .7s var(--ease) forwards}
   .is-active [data-anim="2"]{animation-delay:.12s}
   .is-active [data-anim="3"]{animation-delay:.24s}
   .is-active [data-anim="4"]{animation-delay:.36s}
   .is-active [data-anim="5"]{animation-delay:.48s}
   @keyframes fadeUp{to{opacity:1;transform:none}}
-  .no-anim [data-anim]{opacity:1;transform:none;animation:none!important}
+  .s1.is-active .band h1{animation:rise .9s var(--ease) both}
+  @keyframes rise{from{opacity:0;transform:translateY(calc(var(--u)*4))}to{opacity:1;transform:none}}
 
-  /* ---------- 顶部进度 / 页码 / 导航 ---------- */
-  #bar{position:fixed;left:0;top:0;height:2px;background:var(--red);width:11.1%;transition:width .5s var(--ease);z-index:20}
+  /* ================= 控件 ================= */
+  #bar{position:fixed;left:0;top:0;height:3px;background:var(--red);width:11.1%;transition:width .4s linear;z-index:20}
   #pager{
-    position:fixed;right:calc(env(safe-area-inset-right,0px) + 22px);top:18px;
-    font-family:Didot,"Bodoni MT",Georgia,serif;font-size:13px;letter-spacing:.18em;color:var(--paper);opacity:.6;z-index:20;
+    position:fixed;right:20px;top:14px;z-index:20;
+    font-family:Didot,"Bodoni MT",Georgia,serif;font-size:12px;letter-spacing:.2em;
+    color:var(--paper);opacity:.55;
   }
-  #dots{
-    position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
-    display:flex;gap:10px;z-index:20;
-  }
-  #dots button{
-    width:22px;height:3px;padding:0;border:0;background:rgba(245,242,236,.28);cursor:pointer;transition:background .3s;
-  }
+  #dots{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:8px;z-index:20}
+  #dots button{width:16px;height:2px;padding:0;border:0;background:rgba(245,242,236,.25);cursor:pointer;transition:background .25s}
   #dots button.on{background:var(--red)}
   #overlay{position:fixed;inset:0;pointer-events:none;z-index:30}
 
   @media (max-width:760px){
-    .s1 h1{font-size:calc(var(--u)*8.4)}
-    .sub{max-width:100%}
-    .bulletin{max-width:100%}
-    .s4 .car-wrap{width:42%;opacity:.35}
-    .compare{grid-template-columns:1fr;gap:calc(var(--u)*3)}
-    .mid-note{position:static;transform:none;display:inline-block;margin:calc(var(--u)*1) 0}
-    .mech{grid-template-columns:1fr;gap:calc(var(--u)*2.4)}
-    .tri{grid-template-columns:1fr;gap:calc(var(--u)*1.6)}
-    .s7 .car-wrap{opacity:.3}
-    .foot{font-size:calc(var(--u)*1.3)}
+    .s1{grid-template-rows:56% 44%}
+    .s3 .car-big{width:96%;top:20%}
+    .s3 .oncar{font-size:calc(var(--u)*6)}
+    .s4 .txt{max-width:100%;padding-top:calc(var(--u)*9)}
+    .s4 .car-wrap{width:52%;bottom:-6%;opacity:.5}
+    .s5 .cols{grid-template-columns:1fr;padding-top:calc(var(--u)*11);gap:calc(var(--u)*2)}
+    .s5 .divider{display:none}
+    .s6 .phone{width:58%;opacity:.5}
+    .s6 .grid{margin-left:0;padding-top:calc(var(--u)*16)}
+    .s7 .txt{max-width:100%}
+    .s7 .car-wrap{width:120%;opacity:.55}
+    .s8 .lab{width:30%}
+    .s8 .lab p{font-size:calc(var(--u)*1.3)}
+    .foot{font-size:calc(var(--u)*1.15)}
   }
   @media (prefers-reduced-motion:reduce){
     #deck{transition:none}
@@ -240,7 +247,7 @@
     html,body{overflow:visible;background:#fff}
     #stage{position:static;display:block}
     #deck{display:block;width:100%;height:auto;transform:none!important}
-    .slide{height:100vh;page-break-after:always;width:100%}
+    .slide{height:100vh;width:100%;page-break-after:always}
     #bar,#dots,#pager{display:none}
   }
 </style>
@@ -251,222 +258,249 @@
 
     <!-- 1 封面 -->
     <section class="slide dark s1">
-      <div class="cover" data-anim="1">
-        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <div class="art">
+        <svg viewBox="0 0 1600 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
           <defs>
-            <g id="p">
-              <circle cx="50" cy="24" r="19"/>
-              <path d="M10 140c0-28 18-48 40-48s40 20 40 48z"/>
-            </g>
-            <g id="carShape">
-              <path d="M22 106h276c7 0 12-5 12-12v-6c0-9-6-16-15-19l-40-10-24-20c-6-5-13-7-21-7H130c-8 0-16 3-21 9l-21 22-42 9c-10 2-16 10-16 19v3c0 6 4 12 10 12z" fill="#F5F2EC"/>
-              <path d="M132 34h44l15 22h-74zM264 56h16l24 10h-48z" fill="#0B0B0B"/>
-              <circle cx="104" cy="108" r="17" fill="#0B0B0B" stroke="#F5F2EC" stroke-width="4"/>
-              <circle cx="258" cy="108" r="17" fill="#0B0B0B" stroke="#F5F2EC" stroke-width="4"/>
-              <g fill="#0B0B0B">
-                <circle cx="152" cy="60" r="7"/>
-                <path d="M138 76c0-8 6-13 14-13s14 5 14 13z"/>
+            <symbol id="p" viewBox="0 0 100 140">
+              <circle cx="50" cy="22" r="20"/>
+              <path d="M4 140c0-30 20-52 46-52s46 22 46 52z"/>
+            </symbol>
+            <symbol id="pPhone" viewBox="0 0 100 140">
+              <use href="#p" width="100" height="140"/>
+              <rect x="74" y="4" width="20" height="34" rx="2"/>
+            </symbol>
+            <symbol id="carShape" viewBox="0 0 320 140">
+              <path d="M22 106h276c7 0 12-5 12-12v-6c0-9-6-16-15-19l-40-10-24-20c-6-5-13-7-21-7H130c-8 0-16 3-21 9l-21 22-42 9c-10 2-16 10-16 19v3c0 6 4 12 10 12z" fill="var(--body,#F5F2EC)"/>
+              <path d="M132 34h44l15 22h-74zM264 56h16l24 10h-48z" fill="var(--win,#070707)"/>
+              <circle cx="104" cy="108" r="17" fill="var(--tyre,#070707)" stroke="var(--body,#F5F2EC)" stroke-width="4"/>
+              <circle cx="258" cy="108" r="17" fill="var(--tyre,#070707)" stroke="var(--body,#F5F2EC)" stroke-width="4"/>
+              <g fill="var(--drv,#070707)">
+                <circle cx="152" cy="58" r="7"/>
+                <path d="M137 76c0-8 7-14 15-14s15 6 15 14z"/>
               </g>
-              <g fill="#0B0B0B" opacity=".9">
+              <g fill="var(--roof,#070707)">
                 <rect x="150" y="12" width="9" height="14" rx="2"/>
                 <rect x="163" y="14" width="9" height="14" rx="2"/>
                 <rect x="176" y="11" width="9" height="15" rx="2"/>
               </g>
-              <circle cx="156" cy="10" r="2.6" fill="#C8102E"/>
-              <path d="M112 92h34" stroke="#C8102E" stroke-width="2.4"/>
-            </g>
+              <circle cx="156" cy="10" r="2.8" fill="#C8102E"/>
+              <path d="M112 92h34" stroke="#C8102E" stroke-width="2.6"/>
+            </symbol>
           </defs>
 
-          <!-- 人群：环绕，两侧更密 -->
-          <g fill="#F5F2EC" opacity=".10">
-            <use href="#p" x="40"  y="300" width="130" height="182"/>
-            <use href="#p" x="150" y="250" width="150" height="210"/>
-            <use href="#p" x="286" y="300" width="130" height="182"/>
-            <use href="#p" x="400" y="230" width="160" height="224"/>
-            <use href="#p" x="1200" y="240" width="150" height="210"/>
-            <use href="#p" x="1320" y="290" width="140" height="196"/>
-            <use href="#p" x="1440" y="300" width="130" height="182"/>
+          <!-- 人群：纯黑，100%，贴近镜头，出血 -->
+          <g fill="#070707">
+            <use href="#p" x="-40" y="330" width="300" height="420"/>
+            <use href="#p" x="230" y="290" width="330" height="462"/>
+            <use href="#p" x="520" y="350" width="280" height="392"/>
+            <use href="#p" x="760" y="300" width="320" height="448"/>
+            <use href="#p" x="1040" y="340" width="300" height="420"/>
+            <use href="#p" x="1300" y="280" width="340" height="476"/>
+            <use href="#p" x="1560" y="330" width="300" height="420"/>
           </g>
-          <g fill="#F5F2EC" opacity=".18">
-            <use href="#p" x="60"  y="470" width="180" height="252"/>
-            <use href="#p" x="230" y="430" width="200" height="280"/>
-            <use href="#p" x="410" y="470" width="180" height="252"/>
-            <use href="#p" x="1170" y="450" width="190" height="266"/>
-            <use href="#p" x="1350" y="470" width="180" height="252"/>
+          <g fill="#070707" opacity=".92">
+            <use href="#pPhone" x="150" y="196" width="250" height="350"/>
+            <use href="#p" x="430" y="230" width="260" height="364"/>
+            <use href="#pPhone" x="940" y="206" width="250" height="350"/>
+            <use href="#p" x="1160" y="240" width="260" height="364"/>
+            <use href="#pPhone" x="1420" y="200" width="250" height="350"/>
           </g>
-          <g fill="#F5F2EC" opacity=".26">
-            <use href="#p" x="70"  y="650" width="240" height="336"/>
-            <use href="#p" x="300" y="620" width="260" height="364"/>
-            <use href="#p" x="1090" y="630" width="250" height="350"/>
-            <use href="#p" x="1330" y="650" width="240" height="336"/>
-          </g>
-          <!-- 举起的手机屏 -->
-          <g fill="#F5F2EC" opacity=".5">
-            <rect x="352" y="600" width="26" height="46" rx="4"/>
-            <rect x="1192" y="588" width="26" height="46" rx="4"/>
-            <rect x="214" y="424" width="22" height="38" rx="3" opacity=".7"/>
+          <g fill="#070707">
+            <use href="#p" x="40" y="150" width="200" height="280" opacity=".9"/>
+            <use href="#p" x="1360" y="150" width="200" height="280" opacity=".9"/>
           </g>
 
-          <!-- 车 -->
-          <g data-morph="car" class="js-car">
-            <use href="#carShape" x="490" y="300" width="620" height="270"/>
+          <!-- 车：黑剪影，窗为纸白，司机为黑 -->
+          <g data-morph="car" style="--body:#070707;--win:#F5F2EC;--tyre:#070707;--drv:#070707;--roof:#070707">
+            <use href="#carShape" x="520" y="250" width="580" height="253"/>
           </g>
         </svg>
       </div>
-      <div class="cap">
-        <p class="kicker" data-anim="2">2026 · 武汉 · 万圣夜</p>
-        <h1 data-anim="3">四小时，<br>一辆车的两种版本</h1>
-        <p class="sub" data-anim="4">从一条网传视频，到一份警情通报</p>
+      <div class="band">
+        <p class="kicker">2026 · 武汉 · 万圣夜</p>
+        <h1>四小时，<br>一辆车的两种版本</h1>
+        <p class="sub">从一条网传视频，到一份警情通报</p>
       </div>
     </section>
 
     <!-- 2 目录 -->
     <section class="slide dark s2">
-      <p class="kicker">目录</p>
-      <h2 data-anim="1">三个问题</h2>
-      <div class="toc">
-        <div class="toc-row" data-anim="2"><span class="n">01</span><span class="t">传言怎么说</span><span class="rule"></span></div>
-        <div class="toc-row" data-anim="3"><span class="n">02</span><span class="t">现场是什么</span><span class="rule"></span></div>
-        <div class="toc-row" data-anim="4"><span class="n">03</span><span class="t">差异从哪来</span><span class="rule"></span></div>
+      <div class="hrule a"></div>
+      <div class="hrule b"></div>
+      <h2>目录</h2>
+      <div class="toc-main">
+        <div class="row"><span class="n">01</span><span class="t">传言怎么说</span></div>
+        <div class="row"><span class="n">02</span><span class="t">现场是什么</span></div>
+        <div class="row"><span class="n">03</span><span class="t">差异从哪来</span></div>
       </div>
-      <p class="foot">按 → 或点击下方短横线翻页</p>
+      <p class="foot">按 → 翻页 ／ 点击底部短横线跳转</p>
     </section>
 
-    <!-- 3 谜面 -->
+    <!-- 3 谣言墙 -->
     <section class="slide dark s3">
       <p class="kicker">案例 · 传言</p>
-      <h2 data-anim="1">网上流传的那个版本</h2>
-      <div class="wall">
-        <div class="ghost-car" data-morph="car" aria-hidden="true">
-          <svg viewBox="0 0 620 270"><use href="#carShape" x="0" y="0" width="620" height="270"/></svg>
-        </div>
-        <p class="wall-item big red" data-anim="2">砸了窗</p>
-        <p class="wall-item" data-anim="3">放了气</p>
-        <p class="wall-item" data-anim="3">车身涂满脏话</p>
-        <p class="wall-item" data-anim="4">一辆车在人群里困了四小时</p>
-        <p class="wall-item" data-anim="5">面目全非</p>
-        <p class="tag" data-anim="5">以上均为当时的网传表述</p>
+      <div class="car-big" data-morph="car" aria-hidden="true">
+        <svg viewBox="0 0 620 270" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#070707">
+          <use href="#carShape" width="620" height="270"/>
+        </svg>
       </div>
+      <div class="stack">
+        <p><span class="mark">砸了窗</span></p>
+        <p>放了气</p>
+        <p>涂满脏话</p>
+        <p>困了四小时</p>
+      </div>
+      <p class="oncar">面目全非</p>
+      <p class="tag">以上均为当时的网传表述</p>
       <p class="foot">网传内容仅作呈现，不代表事实认定</p>
     </section>
 
     <!-- 4 通报 -->
-    <section class="slide light s4">
-      <div class="rule-red"></div>
-      <p class="kicker">案例 · 现场</p>
-      <h2 data-anim="1">通报里的四小时</h2>
-      <div class="bulletin">
-        <div class="row" data-anim="2"><span class="k">10.31</span><span>17 时许，扬子街与胜利街交会路口</span></div>
-        <div class="row" data-anim="2"><span class="k">地点</span><span>该路段人流量大，车辆滞留路中</span></div>
-        <div class="row" data-anim="3"><span class="k">行为</span><span>行人按压右后轮气门芯、手拍后视镜、在车身放置杂物</span></div>
-        <div class="row" data-anim="4"><span class="k">结论</span><span class="hl">经勘查调查，车身没有受损</span></div>
-        <div class="row" data-anim="5"><span class="k">处理</span><span>1 人治安处罚，3 人批评教育</span></div>
+    <section class="slide dark s4">
+      <div class="rule"></div>
+      <div class="txt">
+        <p class="kicker">案例 · 现场</p>
+        <h2>通报里的<br>四小时</h2>
+        <div class="row"><span class="k">10.31</span><span>17 时许，扬子街与胜利街交会路口</span></div>
+        <div class="row"><span class="k">地点</span><span>人流量大，车辆滞留路中</span></div>
+        <div class="row"><span class="k">行为</span><span>行人按压右后轮气门芯、拍打后视镜、往车身放杂物</span></div>
+        <div class="row"><span class="k">结论</span><span class="box">经勘查调查，车身没有受损</span></div>
+        <div class="row"><span class="k">处理</span><span>1 人治安处罚，3 人批评教育</span></div>
       </div>
-      <div class="car-wrap" data-morph="car" aria-hidden="true">
-        <svg viewBox="0 0 620 270"><use href="#carShape" x="0" y="0" width="620" height="270"/></svg>
+      <div class="car-wrap" aria-hidden="true">
+        <svg viewBox="0 0 620 270" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#070707">
+          <use href="#carShape" width="620" height="270"/>
+        </svg>
       </div>
       <p class="foot">来源：武汉市公安局江岸区分局警情通报，11 月 2 日晚</p>
     </section>
 
-    <!-- 5 对照 -->
+    <!-- 5 对照（唯一纸白） -->
     <section class="slide light s5">
-      <div class="halves" aria-hidden="true">
-        <svg viewBox="0 0 620 270"><use href="#carShape" width="620" height="270"/></svg>
-      </div>
       <p class="kicker">案例 · 对照</p>
-      <h2 data-anim="1">两个版本，逐条对照</h2>
-      <div class="compare">
-        <div class="col" data-anim="2">
+      <div class="divider"></div>
+      <div class="halves" aria-hidden="true">
+        <svg viewBox="0 0 1600 300" preserveAspectRatio="xMidYMid slice">
+          <g fill="#070707" style="--body:#070707;--win:#F5F2EC;--tyre:#070707;--drv:#070707;--roof:#070707">
+            <use href="#carShape" x="-260" y="60" width="900" height="392"/>
+            <use href="#carShape" x="960" y="60" width="900" height="392"/>
+          </g>
+        </svg>
+      </div>
+      <div class="cols">
+        <div class="col">
           <h3>网传 ／ 报道</h3>
           <ul>
-            <li><u>砸车窗</u></li>
-            <li><u>给轮胎放气</u></li>
-            <li><u>车身涂写辱骂文字</u></li>
+            <li><span>砸车窗</span></li>
+            <li><span>给轮胎放气</span></li>
+            <li><span>涂写辱骂文字</span></li>
             <li>众人围堵</li>
           </ul>
         </div>
-        <div class="col" data-anim="3">
+        <div class="col">
           <h3>警方通报</h3>
           <ul>
-            <li>所列行为中<u>未提砸窗</u></li>
-            <li><u>按压右后轮气门芯</u></li>
-            <li><u>未提及涂鸦</u></li>
-            <li>1 人处罚、3 人批评教育</li>
+            <li>所列行为中<span>未提砸窗</span></li>
+            <li><span>按压气门芯</span></li>
+            <li><span>未提及涂鸦</span></li>
+            <li>1 人处罚、3 人教育</li>
           </ul>
         </div>
-        <span class="mid-note">同一件事，四种说法</span>
       </div>
       <p class="foot">左栏据媒体报道；右栏据警情通报原文</p>
     </section>
 
-    <!-- 6 落差 -->
+    <!-- 6 机制 -->
     <section class="slide dark s6">
-      <p class="kicker">案例 · 机制</p>
-      <h2 data-anim="1">落差是怎么产生的</h2>
-      <div class="mech">
-        <div class="node">
-          <span class="no">01</span>
+      <div class="phone" aria-hidden="true">
+        <svg viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet">
+          <rect x="70" y="0" width="160" height="300" rx="16" fill="#F5F2EC"/>
+          <rect x="82" y="14" width="136" height="272" rx="8" fill="#070707"/>
+          <circle cx="118" cy="330" r="26" fill="#F5F2EC"/>
+          <path d="M70 420c0-58 36-96 80-96s80 38 80 96z" fill="#F5F2EC"/>
+          <rect x="150" y="40" width="10" height="220" fill="#C8102E"/>
+        </svg>
+      </div>
+      <div class="grid">
+        <p class="kicker">案例 · 机制</p>
+        <h2>落差是怎么<br>产生的</h2>
+        <div class="item">
           <h4>只拍局部</h4>
           <p>首发视频多是车轮、车顶、人墙，没有前后文。观众看见的是一个被切断的瞬间。</p>
         </div>
-        <div class="node">
-          <span class="no">02</span>
+        <div class="item">
           <h4>标题先给结论</h4>
           <p>「砸烂」「围殴」出现在事实之前。标题一旦定调，后面的画面都在为它作证。</p>
         </div>
-        <div class="node">
-          <span class="no">03</span>
+        <div class="item">
           <h4>搬运层层加码</h4>
           <p>原声被嫁接、字幕被重写、旧素材被混剪。每一次转发，都离现场更远一步。</p>
         </div>
+        <p class="tail">没有一方掌握完整信息，<b>但每一方都在下结论。</b></p>
       </div>
-      <p class="mech-tail" data-anim="4">连「这辆车该不该出现在这条路上」，网上也有两种说法——<b>没有一方掌握完整信息，但每一方都在下结论。</b></p>
       <p class="foot">传播数据：社交平台讨论占比 94.8%（第三方舆情监测，样本口径未公开）</p>
     </section>
 
     <!-- 7 反转 -->
     <section class="slide red s7">
-      <div class="veil" aria-hidden="true"></div>
+      <div class="wipe" aria-hidden="true"></div>
       <div class="car-wrap" aria-hidden="true">
-        <svg viewBox="0 0 620 270"><use href="#carShape" width="620" height="270"/></svg>
+        <svg viewBox="0 0 620 270" style="--body:#070707;--win:#C8102E;--tyre:#070707;--drv:#070707;--roof:#070707">
+          <use href="#carShape" width="620" height="270"/>
+        </svg>
       </div>
-      <div class="inner">
+      <div class="txt">
         <p class="kicker">案例 · 反转</p>
-        <h2 data-anim="1">通报之后，<br>故事又反转一次</h2>
-        <p data-anim="2">一部分人接受「车身未受损」；<br>一部分人转向质疑：四小时里为什么没人疏导。</p>
-        <p class="big" data-anim="3">真正受损的，不是车漆。</p>
+        <h2>通报之后，<br>故事又反转一次</h2>
+        <p>一部分人接受「车身未受损」；<br>一部分人转向质疑：四小时里为什么没人疏导。</p>
+        <p class="big">真正受损的，<br>不是车漆。</p>
       </div>
     </section>
 
-    <!-- 8 追问 -->
+    <!-- 8 三方 -->
     <section class="slide dark s8">
-      <p class="kicker">案例 · 追问</p>
-      <h2 data-anim="1">三方各缺一块</h2>
-      <div class="tri">
-        <div class="card" data-anim="2">
-          <h4>平台</h4>
-          <p>导航导得进，带不出。</p>
-          <span class="quote">回应仅一句「车是租的，目前状态还行」（据澎湃新闻报道）</span>
-        </div>
-        <div class="card" data-anim="3">
-          <h4>现场</h4>
-          <p>1 人治安处罚，3 人批评教育。</p>
-          <span class="quote">四小时里，没有疏导记录</span>
-        </div>
-        <div class="card" data-anim="4">
-          <h4>传播</h4>
-          <p>讨论几乎全部发生在社交平台。</p>
-          <span class="quote">放大者无人负责</span>
-        </div>
+      <div class="title">
+        <p class="kicker">案例 · 追问</p>
+        <h2>三方各缺一块</h2>
       </div>
-      <p class="foot">处罚信息据警情通报；平台回应为单一来源转述</p>
+      <div class="three">
+        <div class="fig a" aria-hidden="true">
+          <svg viewBox="0 0 260 260"><g fill="#F5F2EC">
+            <rect x="80" y="0" width="110" height="200" rx="14"/>
+            <circle cx="60" cy="222" r="22"/>
+            <path d="M10 260c0-46 22-76 50-76s50 30 50 76z"/>
+          </g></svg>
+        </div>
+        <div class="fig b" aria-hidden="true">
+          <svg viewBox="0 0 300 260"><g fill="#F5F2EC">
+            <use href="#p" x="0" y="40" width="110" height="154"/>
+            <use href="#pPhone" x="95" y="10" width="120" height="168"/>
+            <use href="#p" x="200" y="50" width="100" height="140"/>
+          </g></svg>
+        </div>
+        <div class="fig c" aria-hidden="true">
+          <svg viewBox="0 0 300 260" style="--body:#F5F2EC;--win:#070707;--tyre:#070707;--drv:#070707;--roof:#070707"><use href="#carShape" x="0" y="60" width="300" height="131"/></svg>
+        </div>
+        <svg class="tri-lines" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
+          <g stroke="#C8102E" stroke-width="6" fill="none">
+            <path d="M430 560 L800 790 L1180 560"/>
+            <path d="M430 560 L1180 560"/>
+          </g>
+        </svg>
+      </div>
+      <div class="labels">
+        <div class="lab a"><h4>平台</h4><p>导航导得进，带不出。回应仅一句「车是租的，状态还行」。</p></div>
+        <div class="lab b"><h4>现场</h4><p>1 人处罚、3 人教育；四小时里没有疏导记录。</p></div>
+        <div class="lab c"><h4>传播</h4><p>讨论几乎全在社交平台，放大者无人负责。</p></div>
+      </div>
+      <p class="foot">处罚信息据警情通报；平台回应为单一来源转述（据澎湃新闻报道）</p>
     </section>
 
     <!-- 9 结尾 -->
     <section class="slide dark s9">
       <p class="kicker">结尾</p>
-      <h2 data-anim="1">事实走得比传言慢</h2>
-      <p data-anim="2">车漆可以没坏<br>判断已经坏了</p>
+      <h2>事实走得<br>比传言慢</h2>
+      <p>车漆可以没坏<br>判断已经坏了</p>
       <div class="endline"></div>
       <p class="foot">案例：2026.10.31 武汉江汉路　｜　依据：江岸区警方警情通报、武公交规〔2026〕15 号</p>
     </section>
@@ -490,6 +524,10 @@
   const stage = document.getElementById('stage');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let index = 0, locked = false;
+
+  // 节奏：硬切 / 大位移 / 常规
+  const HARD = new Set(['2>3','6>7']);
+  const BIG  = new Set(['1>2','3>4','4>5','7>8']);
 
   function syncUnit(){
     const w = stage.getBoundingClientRect().width;
@@ -517,39 +555,35 @@
 
   function morphPairs(from, to){
     if (!from || !to || reduce) return [];
-    const pairs = [];
+    const out = [];
     to.querySelectorAll('[data-morph]').forEach(target=>{
       const id = target.getAttribute('data-morph');
       const src = from.querySelector('[data-morph="'+id+'"]');
       if (!src) return;
-      const a = src.getBoundingClientRect();
-      const b = target.getBoundingClientRect();
+      const a = src.getBoundingClientRect(), b = target.getBoundingClientRect();
       if (!a.width || !b.width) return;
-      pairs.push({src, target, a, b});
+      out.push({src, target, a, b});
     });
-    return pairs;
+    return out;
   }
 
   function go(n){
     n = Math.max(0, Math.min(slides.length-1, n));
     if (n === index || locked) return;
-    const from = slides[index];
-    const to = slides[n];
+    const from = slides[index], to = slides[n];
+    const key = (index+1) + '>' + (n+1);
+    const dur = reduce ? 0 : (HARD.has(key) ? 0.06 : BIG.has(key) ? 1.2 : 0.6);
     const pairs = morphPairs(from, to);
 
     locked = true;
+    document.documentElement.style.setProperty('--dur', dur + 's');
+
     pairs.forEach(({src, target, a, b})=>{
       const clone = src.cloneNode(true);
-      clone.className += ' morph-clone';
       clone.style.cssText = [
-        'position:fixed',
-        'left:'+a.left+'px',
-        'top:'+a.top+'px',
-        'width:'+a.width+'px',
-        'height:'+a.height+'px',
-        'margin:0',
-        'pointer-events:none',
-        'z-index:40'
+        'position:fixed','left:'+a.left+'px','top:'+a.top+'px',
+        'width:'+a.width+'px','height:'+a.height+'px','margin:0',
+        'pointer-events:none','z-index:40'
       ].join(';');
       overlay.appendChild(clone);
       src.style.visibility = 'hidden';
@@ -557,7 +591,7 @@
       const dx = b.left - a.left, dy = b.top - a.top;
       const sx = b.width / a.width, sy = b.height / a.height;
       clone.style.transformOrigin = 'top left';
-      clone.style.transition = 'transform .8s var(--ease)';
+      clone.style.transition = 'transform ' + dur + 's var(--ease)';
       requestAnimationFrame(()=>{
         clone.style.transform = 'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')';
       });
@@ -565,13 +599,13 @@
         clone.remove();
         target.style.visibility = '';
         src.style.visibility = '';
-      }, 820);
+      }, dur*1000 + 30);
     });
 
     deck.style.transform = 'translateX(' + (-n*100) + '%)';
     index = n;
     activate(n);
-    setTimeout(()=>{ locked = false; }, reduce ? 0 : 820);
+    setTimeout(()=>{ locked = false; }, Math.max(dur*1000, 60));
   }
 
   document.addEventListener('keydown', e=>{
@@ -581,21 +615,20 @@
     else if (e.key === 'End') { e.preventDefault(); go(slides.length-1); }
   });
 
-  let sx = 0, sy = 0;
+  let sx0 = 0, sy0 = 0;
   document.addEventListener('touchstart', e=>{
-    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    sx0 = e.touches[0].clientX; sy0 = e.touches[0].clientY;
   }, {passive:true});
   document.addEventListener('touchend', e=>{
-    const dx = e.changedTouches[0].clientX - sx;
-    const dy = e.changedTouches[0].clientY - sy;
+    const dx = e.changedTouches[0].clientX - sx0;
+    const dy = e.changedTouches[0].clientY - sy0;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
   }, {passive:true});
 
-  window.addEventListener('resize', ()=>{ syncUnit(); });
+  window.addEventListener('resize', syncUnit);
 
   syncUnit();
   activate(0);
-  slides[0].classList.add('is-active');
 })();
 </script>
 </body>
